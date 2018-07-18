@@ -1,88 +1,44 @@
 import 'package:flutter/material.dart';
-//import 'package:url_launcher/url_launcher.dart';
-//import 'dart:async';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:flutter_app_webview_scratch/browser.dart';
+import 'package:flutter_app_webview_scratch/util/settings.dart';
 
-String url = "https://";
 
 void main() => runApp(new MyApp());
 
+Settings settings = new Settings();
+
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Webview Sample',
-      theme: new ThemeData(),
-      routes: {
-        "/":(_) => MyHomePage(),
-        "/webview": (_) => WebviewScaffold(
-            url: url,
-          appBar: AppBar(
-            title: Text("Webview"),
-          ),
-          withJavascript: true,
-          withLocalStorage: true,
-          withZoom: true,
-        )
-      },
-      //home: new MyHomePage(),
+      home: new Browser(title: 'Flutter Browser'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class Browser extends StatefulWidget {
+  Browser({Key key, this.title}) : super(key: key);
+
+  final String title;
+
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _BrowserState createState() => new _BrowserState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
-  final webView = FlutterWebviewPlugin();
-  TextEditingController searchBarController = TextEditingController(text: url);
+class _BrowserState extends State<Browser> {
 
   @override
   void initState() {
     super.initState();
-    webView.close();
-
-    searchBarController.addListener((){
-      url = searchBarController.text;
-    });
-  }
-
-  @override
-  void dispose() {
-    webView.dispose();
-    searchBarController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
-      appBar: AppBar(
-        title: Text('Seachbar Demo'),
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: TextField(
-                controller: searchBarController,
-              ),
-            ),
-            RaisedButton(
-              child: Text('Open Webview'),
-              onPressed: (){
-                Navigator.of(context).pushNamed("/webview");
-              },
-            )
-          ],
-        ),
-      ),
+     body: new NormalTab(),
     );
   }
+
+
+
 }

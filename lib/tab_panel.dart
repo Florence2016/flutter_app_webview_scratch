@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-
-String url = "https://";
 
 class Panels extends StatefulWidget {
   final AnimationController controller;
@@ -12,27 +9,7 @@ class Panels extends StatefulWidget {
 }
 
 class _PanelsState extends State<Panels> {
-  TextEditingController searchBarController = TextEditingController();
-  final webView = FlutterWebviewPlugin();
-
   static const header_height = 32.0;
-
-  @override
-  void initState() {
-    super.initState();
-    webView.close();
-
-    searchBarController.addListener((){
-      url = searchBarController.text;
-    });
-  }
-
-  @override
-  void dispose() {
-    webView.dispose();
-    searchBarController.dispose();
-    super.dispose();
-  }
 
 
   Animation<RelativeRect> getPanelAnimation(BoxConstraints constraints){
@@ -41,8 +18,8 @@ class _PanelsState extends State<Panels> {
     final frontPanelHeight = -header_height;
 
     return RelativeRectTween(
-      begin: RelativeRect.fromLTRB(0.0, backPanelHeight, 0.0, frontPanelHeight),
-          end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0)).animate(CurvedAnimation
+        begin: RelativeRect.fromLTRB(0.0, backPanelHeight, 0.0, frontPanelHeight),
+        end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0)).animate(CurvedAnimation
       (parent: widget.controller, curve: Curves.linear));
   }
 
@@ -54,29 +31,26 @@ class _PanelsState extends State<Panels> {
       child: Stack(
         children: <Widget>[
           Container(
-            color: theme.primaryColor,
+            color: Colors.blue[900],
             child: Center(
               child: Text("History Panel",
-              style: TextStyle(
-               fontSize: 24.0, color: Colors.white)
+                  style: TextStyle(
+                      fontSize: 24.0, color: Colors.white)
               ),
             ),
           ),
           PositionedTransition(
             rect: getPanelAnimation(constraints),
             child: Material(
-             elevation: 12.0,
-             borderRadius: BorderRadius.only(
-               topLeft: Radius.circular(16.0),
-               topRight: Radius.circular(16.0)),
-              child: Column(
-                children: <Widget>[
-                Container(
-                child: Text('Front Panel'),
-                  
+              elevation: 12.0,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0)),
+              child: Container(
+                child: Center(
+                  child: Text('Front Panel'),
                 ),
-                ],
-              ),
+              )
             ),
           )
         ],
